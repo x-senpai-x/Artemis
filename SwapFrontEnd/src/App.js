@@ -373,7 +373,7 @@ const App = () => {
             </a>
           </div>
           <div className="flex items-center gap-8">
-            <NavLink href="/architecture">
+            <NavLink href="/https://github.com/x-senpai-x/Artemis?tab=readme-ov-file#architecture-of-the-orderflow">
               Architecture
             </NavLink>
             <NavLink href="/docs">
