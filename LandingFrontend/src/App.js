@@ -348,7 +348,7 @@ function App() {
         </div>
         <div className="flex items-center gap-8">
           <NavLink 
-            href="/architecture" 
+            href="https://github.com/x-senpai-x/Artemis?tab=readme-ov-file#architecture-of-the-orderflow" 
             isActive={currentPage === 'architecture'}
           >
             Architecture
