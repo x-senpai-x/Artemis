@@ -18,6 +18,7 @@ import Arb from './assets/arbitrumlogo.webp';
 import Base from './assets/baselogo.svg';
 import Poly from './assets/polygonlogo.svg';
 import Attest from './assets/attestation.jpeg';
+import Video from './assets/presentation.mp4';
 
 const FaqItem = ({ question, children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -314,6 +315,20 @@ function App() {
       logo: SushiLogo
     }
   ];
+  
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handlePlayClick = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   const steps = [
     "Socket Protocol is used to settle intents across chains.",
@@ -348,7 +363,7 @@ function App() {
         </div>
         <div className="flex items-center gap-8">
           <NavLink 
-            href="https://github.com/x-senpai-x/Artemis?tab=readme-ov-file#architecture-of-the-orderflow" 
+            href="/architecture" 
             isActive={currentPage === 'architecture'}
           >
             Architecture
@@ -520,20 +535,21 @@ function App() {
                     </div>
                   </div>
                   
-                  {/* Video placeholder with overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
-                    <img 
-                      src="/api/placeholder/600/400" 
-                      alt="Network Visualization"
+                  {/* Video section with gradient overlay */}
+                  <div className="relative">
+                    {/* Auto-playing video element */}
+                    <video
                       className="w-full h-full object-cover opacity-80"
-                    />
-                    {/* Add play button overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 rounded-full bg-cyan-400/20 backdrop-blur-sm flex items-center justify-center border border-cyan-400 shadow-lg shadow-cyan-500/50 cursor-pointer hover:bg-cyan-400/30 transition-all duration-300">
-                        <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-cyan-400 border-b-8 border-b-transparent ml-1"></div>
-                      </div>
-                    </div>
+                      playsInline
+                      muted
+                      loop
+                      autoPlay  // This makes the video play immediately when loaded
+                    >
+                      <source src={Video} type="video/mp4" />
+                    </video>
+
+                    {/* Gradient overlay on top of the video */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
                   </div>
                 </div>
               </div>
