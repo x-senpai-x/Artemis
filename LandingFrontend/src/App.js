@@ -375,7 +375,7 @@ function App() {
             Docs
           </NavLink>
           <a 
-            href="https://artemis-kyqm.vercel.app/" 
+            href="https://artemis-fp48.vercel.app" 
             target="_blank" 
             rel="noopener noreferrer"
           >
@@ -406,7 +406,7 @@ function App() {
         <p className="text-2xl md:text-3xl mb-12 max-w-4xl mx-auto neon-blue-subtle">
           Any Token | Any Chain | Instantly | Atomically
         </p>
-        <a href='https://artemis-kyqm.vercel.app/' target='blank'>
+        <a href='https://artemis-fp48.vercel.app' target='blank'>
           <button className="bg-cyan-400 text-gray-900 px-8 py-3 rounded-full text-lg font-medium hover:bg-cyan-300 transition-all duration-300 shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/75 transform hover:-translate-y-0.5">
             Launch App
           </button>
