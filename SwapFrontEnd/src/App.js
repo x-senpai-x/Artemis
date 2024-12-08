@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { ChevronDown, Settings, ArrowUpDown } from 'lucide-react';
-import { BrowserProvider } from 'ethers';
+import { BrowserProvider, Contract } from 'ethers';
 import ArtemisLogo from './assets/logo.jpeg';
 import Particles from 'react-particles';
 import { loadSlim } from "tsparticles-slim";
@@ -13,6 +13,16 @@ const NavLink = ({ href, children }) => (
     {children}
   </a>
 );
+
+const contractABI = [
+  {
+    "inputs": [],
+    "name": "increase",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+];
 
 const ParticleBackground = () => {
   // Initialize particles with our callback
@@ -161,6 +171,9 @@ const App = () => {
   const [fromChain, setFromChain] = useState(chainsList[0]);
   const [toChain, setToChain] = useState(chainsList[1]);
 
+  const [isTransacting, setIsTransacting] = useState(false);
+  const [transactionError, setTransactionError] = useState(null);
+
   // Wallet connection handler
   const handleConnectWallet = async () => {
     if (window.ethereum) {
@@ -177,6 +190,40 @@ const App = () => {
       }
     } else {
       console.error('MetaMask is not installed');
+    }
+  };
+
+  // New function to handle the swap/contract interaction
+  const handleSwap = async () => {
+    setIsTransacting(true);
+    setTransactionError(null);
+
+    try {
+      // Get provider and signer
+      const provider = new BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+
+      // Create contract instance
+      const contractAddress = "0xEA912a237E63fB159A11c5C01A93bD3677248b34";
+      const contract = new Contract(contractAddress, contractABI, signer);
+
+      // Call the increase function
+      const transaction = await contract.increase();
+      
+      // Wait for transaction to be mined
+      const receipt = await transaction.wait();
+      
+      console.log('Transaction successful:', receipt);
+      
+      // Clear amounts after successful transaction
+      setFromAmount('');
+      setToAmount('');
+
+    } catch (error) {
+      console.error('Transaction failed:', error);
+      setTransactionError(error.message);
+    } finally {
+      setIsTransacting(false);
     }
   };
 
@@ -362,7 +409,7 @@ const App = () => {
         <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-2 bg-gray-900/50 backdrop-blur-sm border-b border-cyan-900/30">
           <div className="flex items-center">
             <a 
-              href="https://artemis-pi.vercel.app"
+              href="https://artemis-vert.vercel.app/"
               className="transition-opacity duration-300 hover:opacity-100"
             >
               <img 
@@ -373,7 +420,7 @@ const App = () => {
             </a>
           </div>
           <div className="flex items-center gap-8">
-            <NavLink href="https://github.com/x-senpai-x/Artemis?tab=readme-ov-file#architecture-of-the-orderflow">
+            <NavLink href="/https://github.com/x-senpai-x/Artemis?tab=readme-ov-file#architecture-of-the-orderflow">
               Architecture
             </NavLink>
             <NavLink href="/docs">
@@ -444,11 +491,23 @@ const App = () => {
 
 
             <button 
-                className="w-full mt-6 bg-blue-400 text-gray-900 py-4 rounded-2xl font-medium hover:bg-blue-300 transition-all duration-300 shadow-lg shadow-blue-500/50 hover:shadow-blue-500/75"
-                onClick={isWalletConnected ? undefined : handleConnectWallet}
-              >
-                {isWalletConnected ? 'Swap' : 'Connect Wallet'}
-              </button>
+        className={`w-full mt-6 py-4 rounded-2xl font-medium transition-all duration-300 shadow-lg ${
+          isTransacting 
+            ? 'bg-gray-400 cursor-not-allowed' 
+            : 'bg-blue-400 text-gray-900 hover:bg-blue-300 shadow-blue-500/50 hover:shadow-blue-500/75'
+        }`}
+        onClick={isWalletConnected ? handleSwap : handleConnectWallet}
+        disabled={isTransacting}
+      >
+        {isTransacting ? 'Processing...' : (isWalletConnected ? 'Swap' : 'Connect Wallet')}
+      </button>
+
+      {/* Add error message display */}
+      {transactionError && (
+        <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
+          {transactionError}
+        </div>
+      )}
           </div>
         </div>
       </div>
