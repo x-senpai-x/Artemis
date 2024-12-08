@@ -362,7 +362,7 @@ const App = () => {
         <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-2 bg-gray-900/50 backdrop-blur-sm border-b border-cyan-900/30">
           <div className="flex items-center">
             <a 
-              href="https://artemis-vert.vercel.app/"
+              href="https://artemis-pi.vercel.app"
               className="transition-opacity duration-300 hover:opacity-100"
             >
               <img 
@@ -373,7 +373,7 @@ const App = () => {
             </a>
           </div>
           <div className="flex items-center gap-8">
-            <NavLink href="/https://github.com/x-senpai-x/Artemis?tab=readme-ov-file#architecture-of-the-orderflow">
+            <NavLink href="https://github.com/x-senpai-x/Artemis?tab=readme-ov-file#architecture-of-the-orderflow">
               Architecture
             </NavLink>
             <NavLink href="/docs">
